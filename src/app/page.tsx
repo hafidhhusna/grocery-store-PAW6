@@ -1,12 +1,14 @@
-import {getAuthSession} from '@/lib/auth';
+import React from 'react';
+import Header from "@/components/ui/Header";
+import SideBar from "@/components/ui/SideBar";
 
-type Props = {};
-
-const Home = async (props: Props)=>{
-  const session = await getAuthSession();
-  return(
-    <div>Hello World!</div>
-  )
+const Dashboard = () => {
+  return (
+    <main>
+      <Header />
+      <SideBar />
+    </main>
+  );
 }
 
-export default Home;
+export default Dashboard;

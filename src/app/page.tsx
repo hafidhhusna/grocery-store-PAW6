@@ -8,3 +8,5 @@ const Home = async (props: Props)=>{
     <div>Hello World!</div>
   )
 }
+
+export default Home;

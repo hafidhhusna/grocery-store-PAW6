@@ -20,7 +20,7 @@ const Header: FC = () => {
                     <Searchbar />
                 </div>
             </div>
-            <Link href="/profile" className="flex items-center space-x-2">
+            <Link href="/profile" className="flex items-center space-x-2 px-3 py-2 rounded-xl hover:bg-[#267126] transition-colors duration-300">
                 <Image src={ProfilePic} alt="User Profile" width={40} height={40} className="rounded-full" />
                 <p className="text-white font-semibold text-lg">User Profile</p>
             </Link>

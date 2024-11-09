@@ -18,7 +18,9 @@ model User {
   name          String?
   email         String?   @unique
   emailVerified DateTime?
+  username      String?   @unique
   image         String?
+  password      String?
   accounts      Account[]
   cart          Cart? // Relation to the Cart model (one-to-one)
 }

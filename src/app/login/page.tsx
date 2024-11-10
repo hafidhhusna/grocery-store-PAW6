@@ -8,11 +8,13 @@ import Link from 'next/link';
 import { get } from 'http';
 import { getAuthSession } from '@/lib/auth';
 import { signIn } from 'next-auth/react';
+import { useState } from "react";
 
 type Props = {};
 
 export default function Login() {
   const router = useRouter();
+  const [message, setMessage] = useState('');
 
   const handleRegisterRedirect = () => {
     router.push('/signin');
@@ -24,7 +26,7 @@ export default function Login() {
   };
 
   const handleGoogleSignIn = async (props:Props) => {
-    const session = await getAuthSession();
+    const session = await signIn('google', { callbackUrl: '/dashboard' });
   };
 
   const handleGuestRedirect = () => {
@@ -68,7 +70,7 @@ export default function Login() {
             <button
               type="button"
               onClick={()=> {
-                signIn('google')
+                handleGoogleSignIn({});
               }}
               className="flex items-center justify-center bg-white border border-gray-300 p-2 rounded-md"
             >

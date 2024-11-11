@@ -1,10 +1,8 @@
 // page.tsx
 import React, { useState } from 'react';
 import './App.css';
-import Header from '../components/Header';
-import SideBar from '../components/SideBar';
-import CartItem from '../components/CartItem';
-import Summary from '../components/Summary';
+import CartItem from '@/components/ui/CartItem';
+import Summary from '@/components/ui/Summary';
 
 interface CartItemData {
   id: number;
@@ -28,10 +26,7 @@ function App() {
   };
 
   return (
-    <div className="app-container">
-      {/* Header */}
-      <Header />
-      
+
      <main className="main-content p-8">
           <h1>Your Cart</h1>
           <div className="cart-container">
@@ -55,12 +50,6 @@ function App() {
             <Summary />
           </div>
         </main>
-
-      {/*Sidebar*/}
-      <div className="flex">
-        <SideBar />
-      </div>
-    </div>
   );
 }
 

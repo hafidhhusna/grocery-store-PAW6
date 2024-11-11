@@ -8,11 +8,29 @@
   font-family: 'Poppins', sans-serif;
 }
 
-.cart-title {
-  font-size: 24px;
-  color: #666876;
-  font-weight: 600;
-  margin-bottom: 20px;
+.sidebar {
+  width: 250px;
+  background-color: #f5f5f5;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.header {
+  background-color: #FFF281;
+  padding: 20px;
+  text-align: center;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .cart-container {
@@ -20,9 +38,15 @@
   justify-content: space-between;
 }
 
-.cart-items {
-  flex: 3;
-  margin-right: 20px;
+.cart-title {
+  font-size: 24px;
+  color: #666876;
+  font-weight: 600;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
 }
 
 .cart-header {
@@ -41,3 +65,8 @@
   margin-left: 110px;
 }
 
+
+.cart-items {
+  flex: 3;
+  margin-right: 20px;
+}

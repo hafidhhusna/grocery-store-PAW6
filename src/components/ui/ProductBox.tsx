@@ -1,4 +1,5 @@
-// src/components/ProductBox.tsx
+"use client"; 
+
 import React, { useState } from 'react';
 
 interface ProductBoxProps {
@@ -11,7 +12,7 @@ const ProductBox: React.FC<ProductBoxProps> = ({ name, price, imageSrc }) => {
   const [quantity, setQuantity] = useState(0);
 
   const handleAddToCart = () => {
-    setQuantity(1); // Set initial quantity to 1 when adding to cart
+    setQuantity(1); 
   };
 
   const handleIncrement = () => {
@@ -21,7 +22,7 @@ const ProductBox: React.FC<ProductBoxProps> = ({ name, price, imageSrc }) => {
   const handleDecrement = () => {
     setQuantity((prevQuantity) => {
       if (prevQuantity === 1) {
-        return 0; // Reset to 0 to show "Add to cart" button
+        return 0; 
       }
       return prevQuantity - 1;
     });

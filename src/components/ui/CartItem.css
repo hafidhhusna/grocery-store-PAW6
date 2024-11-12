@@ -42,13 +42,13 @@
   .product-price {
     font-size: 16px;
     color: #666876;
-    margin-left: 90px;
+    margin-left: 35px;
   }
   
   .cart-quantity {
     display: flex;
     align-items: center;
-    margin-right: 12px;
+    margin-left: 50px;
   }
   
   .qty-btn {

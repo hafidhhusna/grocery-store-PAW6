@@ -1,0 +1,43 @@
+/* Summary.css */
+.checkout-summary {
+    background-color: #9ACC8C;
+    padding: 20px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    width: 250px;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .checkout-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  .subtotal {
+    border-top: 1px solid #FFFFFF;
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+  
+  .checkout-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-top: 10px;
+    border-top: 1px solid #FFFFFF;
+    padding-top: 8px;
+  }
+  
+  .checkout-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #344A65;
+    color: #FFFFFF;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  

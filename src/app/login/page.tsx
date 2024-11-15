@@ -26,7 +26,7 @@ export default function Login() {
   };
 
   const handleGoogleSignIn = async (props:Props) => {
-    const session = await signIn('google', { callbackUrl: '/dashboard' });
+    const session = await signIn('google');
   };
 
   const handleGuestRedirect = () => {

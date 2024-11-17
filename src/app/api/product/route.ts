@@ -5,10 +5,14 @@ import { prisma } from 'src/lib/db'
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const categoryId = url.searchParams.get('category');
+  const searchQuery = url.searchParams.get('search') || ''; // Optional search query
 
   try {
     const products = await prisma.product.findMany({
-      where: categoryId ? { categoryId } : {},
+      where: {
+        ...(categoryId && { categoryId }), // Only apply if categoryId is provided
+        ...(searchQuery && { name: { contains: searchQuery, mode: 'insensitive' } }), // Case-insensitive search for product names
+      },
     });
     return NextResponse.json(products);
   } catch (error) {

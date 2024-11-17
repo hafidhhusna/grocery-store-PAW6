@@ -18,43 +18,18 @@ interface Product {
   };
 }
 
-interface Category {
-  id: string;
-  name: string;
-}
-
 const CategoryPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [categoryName, setCategoryName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const searchParams = useSearchParams();
-  const categoryId = searchParams.get('category');
-
-  // Fetch category name by ID
-  useEffect(() => {
-    const fetchCategoryName = async () => {
-      try {
-        const res = await fetch(`/api/category?id=${categoryId}`);
-        if (!res.ok) throw new Error('Failed to fetch category');
-        const data: Category = await res.json();
-        setCategoryName(data.name);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    if (categoryId) {
-      fetchCategoryName();
-    }
-  }, [categoryId]);
-
+  const searchQuery = searchParams.get('query');
   // Fetch products by category ID
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`/api/product?category=${categoryId}`);
+        const response = await fetch(`/api/product?search=${searchQuery}`);
         if (!response.ok) throw new Error('Failed to fetch products');
         const data = await response.json();
         setProducts(data);
@@ -65,10 +40,10 @@ const CategoryPage: React.FC = () => {
       }
     };
 
-    if (categoryId) {
+    if (searchQuery) {
       fetchProducts();
     }
-  }, [categoryId]);
+  }, [searchQuery]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -83,9 +58,7 @@ const CategoryPage: React.FC = () => {
         {/* Content */}
         <div className="p-8 flex-1">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            <Link href="/category">
-              Categories &gt; {categoryName }
-            </Link>
+              Search Result
           </h2>
 
           {/* Loading and Error Handling */}

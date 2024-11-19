@@ -21,11 +21,17 @@ declare module "next-auth/jwt" {
 }
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
   },
   callbacks: {
     jwt: async ({ token }) => {
+      console.log("Token: ", token);
+      if(!token.email) {
+        throw new Error("No email found in token");
+        
+      }
       const db_user = await prisma.user.findFirst({
         where: {
           email: token.email,
@@ -48,7 +54,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET as string,
-  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,

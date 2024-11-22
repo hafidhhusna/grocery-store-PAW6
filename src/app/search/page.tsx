@@ -6,6 +6,7 @@ import Header from '@/components/ui/Header';
 import SideBar from '@/components/ui/SideBar';
 import ProductBox from '@/components/ui/ProductBox';
 import Link from 'next/link';
+import { SessionProvider, useSession } from 'next-auth/react';
 
 interface Product {
   id: string;
@@ -18,10 +19,12 @@ interface Product {
   };
 }
 
-const CategoryPage: React.FC = () => {
+const SearchPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const { data: session } = useSession();
 
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('query');
@@ -74,6 +77,8 @@ const CategoryPage: React.FC = () => {
                   name={product.name}
                   price={product.price}
                   imageSrc={product.images}
+                  productId={product.id}
+                  userId={session?.user.id}
                 />
               ))}
             </div>
@@ -84,4 +89,10 @@ const CategoryPage: React.FC = () => {
   );
 };
 
-export default CategoryPage;
+export default function Page() {
+  return (
+    <SessionProvider>
+      <SearchPage />
+    </SessionProvider>
+  );
+}

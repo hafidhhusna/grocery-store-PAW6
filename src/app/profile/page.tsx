@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
+import { SessionProvider, useSession } from "next-auth/react";
 import { PiPencilSimpleLineBold } from "react-icons/pi";
 import { IoPersonAddSharp } from "react-icons/io5";
 import Header from "@/components/ui/Header"; // Adjust path if needed
 import SideBar from "@/components/ui/SideBar"; // Adjust path if needed
 
 const ProfilePage: React.FC = () => {
+    const { data: session, status }  = useSession();
     const [profileImage, setProfileImage] = useState<string | null>(null);
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,8 +66,8 @@ const ProfilePage: React.FC = () => {
 
                             {/* Profile Name and Email */}
                             <div className="absolute bottom-4 left-4 flex flex-col items-start mb-4">
-                                <p className="text-lg font-semibold text-gray-600">Your Full Name</p>
-                                <p className="text-base text-[#666876]">youremail@gmail.com</p>
+                                <p className="text-lg font-semibold text-gray-600">{session?.user.name}</p>
+                                <p className="text-base text-[#666876]">{session?.user.email}</p>
                             </div>
                         </div>
 
@@ -122,4 +124,10 @@ const ProfilePage: React.FC = () => {
     );
 };
 
-export default ProfilePage;
+export default function Page(){
+    return (
+    <SessionProvider>
+        <ProfilePage></ProfilePage>
+    </SessionProvider>
+    )
+};

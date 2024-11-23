@@ -11,9 +11,9 @@ import Link from 'next/link'
 
 const SideBar: FC = () => {
     const menus = [
-        { name: "Home", link: '/', icon: IoHome },
-        { name: "Shopping Cart", link: '/', icon: FaCartShopping },
-        { name: "Order", link: '/', icon: HiMiniShoppingBag },
+        { name: "Home", link: '/category', icon: IoHome },
+        { name: "Shopping Cart", link: '/cart', icon: FaCartShopping },
+        { name: "Order", link: '/order', icon: HiMiniShoppingBag },
         { name: "Notification", link: '/', icon: IoIosNotifications },
         { name: "Settings", link: '/', icon: IoSettingsSharp }
     ]
@@ -26,7 +26,7 @@ const SideBar: FC = () => {
             <div className="mt-5 flex flex-col gap-2 relative text-white font-semibold">
                 {
                     menus?.map((menu, i) => (
-                        <Link href="menu?.link" key={i} className="flex items-center text-sm gap-4 font-semibold p-2 hover:bg-[#4DA14D] rounded-md group">
+                        <Link href={menu?.link} key={i} className="flex items-center text-sm gap-4 font-semibold p-2 hover:bg-[#4DA14D] rounded-md group">
                             <div>{React.createElement(menu?.icon, { size: "25" })}</div>
                             <h2
                                 style={{

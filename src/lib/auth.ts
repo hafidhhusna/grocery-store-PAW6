@@ -21,11 +21,16 @@ declare module "next-auth/jwt" {
 }
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
   },
   callbacks: {
     jwt: async ({ token }) => {
+      if(!token.email) {
+        throw new Error("No email found in token");
+        
+      }
       const db_user = await prisma.user.findFirst({
         where: {
           email: token.email,
@@ -34,6 +39,9 @@ export const authOptions: NextAuthOptions = {
       if (db_user) {
         token.id = db_user.id;
       }
+      // Add expiration time for JWT token (e.g., 1 hour)
+      // Uncomment if needed
+      // token.exp = Math.floor(Date.now() / 1000) + 60 * 60; // expires in 1 hour
       return token;
     },
     session: ({ session, token }) => {
@@ -47,7 +55,6 @@ export const authOptions: NextAuthOptions = {
     },
   },
   secret: process.env.NEXTAUTH_SECRET as string,
-  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,

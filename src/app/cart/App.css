@@ -1,0 +1,77 @@
+/* App.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+.App {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+}
+
+.cart-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-title {
+  font-size: 24px; /* Adjust as needed */
+  font-weight: bold;
+  color: #666876;
+  margin-bottom: 20px;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+}
+
+.cart-header {
+  display: flex;
+  background-color: #FFF281;
+  color: #666876;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.cart-header span {
+  flex: 1;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.cart-header span {
+  flex: 1;
+  text-align: left;
+}
+
+.cart-header span:nth-child(1) {
+  margin-left: 90px; /* Sesuaikan nilai untuk "Product Name" */
+}
+
+.cart-header span:nth-child(2) {
+  margin-left: 90px; /* Sesuaikan nilai untuk "Price per pcs" */
+}
+
+.cart-header span:nth-child(3) {
+  margin-left: 60px; /* Sesuaikan nilai untuk "Qty" */
+}
+
+
+.cart-items {
+  flex: 3;
+  margin-right: 20px;
+}

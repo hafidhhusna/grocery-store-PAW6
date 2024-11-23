@@ -17,7 +17,7 @@ export default function Login() {
   const [message, setMessage] = useState('');
 
   const handleRegisterRedirect = () => {
-    router.push('/signin');
+    router.push('/register');
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -26,11 +26,15 @@ export default function Login() {
   };
 
   const handleGoogleSignIn = async (props:Props) => {
+<<<<<<< HEAD
     const session = await signIn('google');
+=======
+    const session = await signIn('google', { callbackUrl: '/category' });
+>>>>>>> 224fac7a7d2c82235654e91d599f3b245a2590c6
   };
 
   const handleGuestRedirect = () => {
-    router.push('/dashboard');  
+    router.push('/category');  
   };
 
   return (
@@ -80,7 +84,10 @@ export default function Login() {
             <div className="text-center">
               <span className="text-sm text-[#666876]">Don't have an account? </span>
               <button
-                onClick={handleRegisterRedirect}
+                type="button"
+                onClick={()=> {
+                  handleRegisterRedirect();
+                }}
                 className="text-[#79CC79] text-sm font-semibold underline"
               >
                 Sign-Up
@@ -88,6 +95,7 @@ export default function Login() {
             </div>
             <div className="text-center">
               <button
+                type="button"
                 onClick={handleGuestRedirect}
                 className="text-[#666876] text-sm font-semibold"
               >

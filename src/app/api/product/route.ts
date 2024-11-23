@@ -6,6 +6,16 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const categoryId = url.searchParams.get('category');
   const searchQuery = url.searchParams.get('search') || ''; // Optional search query
+  const sortField = url.searchParams.get('sortField') || 'price'; // Default sort field
+  const sortOrder = url.searchParams.get('sort') || 'asc'; // Default sort order
+
+  // Define valid fields and orders
+  const validFields = ['price', 'quantity', 'name'];
+  const validSortOrders = ['asc', 'desc'];
+
+  // Validate inputs
+  const field = validFields.includes(sortField) ? sortField : 'price';
+  const order = validSortOrders.includes(sortOrder.toLowerCase()) ? sortOrder.toLowerCase() : 'asc';
 
   try {
     const products = await prisma.product.findMany({
@@ -13,12 +23,18 @@ export async function GET(req: Request) {
         ...(categoryId && { categoryId }), // Only apply if categoryId is provided
         ...(searchQuery && { name: { contains: searchQuery, mode: 'insensitive' } }), // Case-insensitive search for product names
       },
+      orderBy: {
+        [field]: order, // Dynamic sorting field and order
+      },
     });
     return NextResponse.json(products);
   } catch (error) {
+    console.error('Error fetching products:', error);
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
   }
 }
+
+
 
 
 export async function POST(request: Request) {

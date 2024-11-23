@@ -13,7 +13,7 @@ const SideBar: FC = () => {
     const menus = [
         { name: "Home", link: '/category', icon: IoHome },
         { name: "Shopping Cart", link: '/cart', icon: FaCartShopping },
-        { name: "Order", link: '/', icon: HiMiniShoppingBag },
+        { name: "Order", link: '/order', icon: HiMiniShoppingBag },
         { name: "Notification", link: '/', icon: IoIosNotifications },
         { name: "Settings", link: '/', icon: IoSettingsSharp }
     ]

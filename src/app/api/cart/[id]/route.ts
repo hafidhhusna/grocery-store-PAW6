@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-    console.log("Request received for deletion");
-    console.log("Params:", params);
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     
     const cartItemId = params.id; // Extract cart item ID from the request URL
   
@@ -16,11 +16,25 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       const cartItem = await prisma.cartItem.findUnique({
         where: { id: cartItemId },
       });
-  
+      
       if (!cartItem) {
         return NextResponse.json({ error: 'Cart item not found.' }, { status: 404 });
       }
-  
+
+      // Check the cart exists
+      const cart = await prisma.cart.findUnique({
+        where: {id: cartItem?.cartId}
+      })
+
+      // Forbid other users to delete the cart item from another user
+      if (!cart) {
+        return NextResponse.json({ error: 'Cart not found.' }, { status: 404 });
+      }else{
+        if (cart.userId !== token?.id) {
+          return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+        }
+      }
+
       // Delete the cart item
       await prisma.cartItem.delete({
         where: { id: cartItemId },
@@ -33,7 +47,8 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
     }
   }
 
-  export async function PATCH(req: Request, { params }: { params: { id: string } }) {
+  export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     const cartItemId = params.id;
   
     try {
@@ -53,6 +68,20 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       if (!cartItem) {
         return NextResponse.json({ error: "Cart item not found." }, { status: 404 });
       }
+
+      // Check the cart exists
+      const cart = await prisma.cart.findUnique({
+        where: {id: cartItem?.cartId}
+      })
+
+      // Forbid other users to delete the cart item from another user
+      if (!cart) {
+        return NextResponse.json({ error: 'Cart not found.' }, { status: 404 });
+      }else{
+        if (cart.userId !== token?.id) {
+          return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+        }
+      }
   
       // Update the quantity in the database
       const updatedCartItem = await prisma.cartItem.update({
@@ -69,34 +98,3 @@ export async function DELETE(req: Request, { params }: { params: { id: string } 
       );
     }
   }
-
-  export async function GET(req: Request, { params }: { params: { id: string } }) {
-    const userId = params.id; // Extract `userId` from the route parameter
-  
-    if (!userId) {
-      return NextResponse.json({ error: 'UserId is required.' }, { status: 400 });
-    }
-  
-    try {
-      const cart = await prisma.cart.findUnique({
-        where: { userId },
-        include: {
-          items: {
-            include: {
-              product: true,
-            },
-          },
-        },
-      });
-  
-      if (!cart) {
-        return NextResponse.json({ message: 'Cart is empty.' }, { status: 200 });
-      }
-  
-      return NextResponse.json(cart);
-    } catch (error) {
-      console.error(error);
-      return NextResponse.json({ error: 'An error occurred.' }, { status: 500 });
-    }
-  }
-  

@@ -1,10 +1,17 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/db' // Adjust the path based on your project structure
+import { getToken } from 'next-auth/jwt';
 
 // Add a product to a cart
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const { userId, productId, quantity } = await req.json();
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+
+    // Forbid other user to post another user cart
+    if (userId !== token?.id) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
 
     if (!userId || !productId || !quantity || quantity <= 0) {
       return NextResponse.json(

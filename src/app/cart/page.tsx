@@ -32,7 +32,7 @@ function App() {
       }
 
       try {
-        const res = await fetch(`/api/cart/${session.user.id}`);
+        const res = await fetch(`/api/user/${session.user.id}/cart`);
         if (!res.ok) throw new Error("Failed to fetch cart items");
         const data = await res.json();
 
@@ -88,14 +88,17 @@ function App() {
       });
       if (!res.ok) throw new Error("Failed to update item quantity");
       const updatedItem = await res.json();
+      
+      // Ensure the updated item contains all necessary fields
       setCartItems((prevItems) =>
-        prevItems.map((item) => (item.id === id ? updatedItem : item))
+        prevItems.map((item) => (item.id === id ? { ...item, ...updatedItem } : item))
       );
     } catch (err) {
       console.error(err);
       alert("Failed to update item quantity.");
     }
   };
+  
 
   // Filter selected items for the Summary component
   const selectedItems = cartItems.filter((item) => item.selected);

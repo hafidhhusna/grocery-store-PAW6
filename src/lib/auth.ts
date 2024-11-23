@@ -27,7 +27,6 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     jwt: async ({ token }) => {
-      console.log("Token: ", token);
       if(!token.email) {
         throw new Error("No email found in token");
         
@@ -40,6 +39,9 @@ export const authOptions: NextAuthOptions = {
       if (db_user) {
         token.id = db_user.id;
       }
+      // Add expiration time for JWT token (e.g., 1 hour)
+      // Uncomment if needed
+      // token.exp = Math.floor(Date.now() / 1000) + 60 * 60; // expires in 1 hour
       return token;
     },
     session: ({ session, token }) => {

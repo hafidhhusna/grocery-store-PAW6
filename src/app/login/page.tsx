@@ -26,11 +26,7 @@ export default function Login() {
   };
 
   const handleGoogleSignIn = async (props:Props) => {
-<<<<<<< HEAD
-    const session = await signIn('google');
-=======
     const session = await signIn('google', { callbackUrl: '/category' });
->>>>>>> 224fac7a7d2c82235654e91d599f3b245a2590c6
   };
 
   const handleGuestRedirect = () => {

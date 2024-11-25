@@ -25,7 +25,7 @@ const NewProduct: React.FC = () => {
     formData.append("quantity", quantity);
     if (image) formData.append("image", image);
 
-    // Simpan data atau kirim ke API
+    // Save data or send to API
     console.log("Form Submitted");
   };
 
@@ -51,28 +51,32 @@ const NewProduct: React.FC = () => {
               <label className="block text-md font-medium text-[#666876] mt-2">Product Name:</label>
               <input
                 type="text"
-                className="w-full border border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
+                className="w-full border-2 border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
               />
               <label className="block text-md font-medium text-[#666876]">Categories:</label>
-              <input
-                type="text"
-                className="w-full border border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
+              <select
+                className="w-full border-2 border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
                 value={categories}
                 onChange={(e) => setCategories(e.target.value)}
-              />
+              >
+                <option value="">Select Category</option>
+                <option value="Category A">Category A</option>
+                <option value="Category B">Category B</option>
+                <option value="Category C">Category C</option>
+              </select>
               <label className="block text-md font-medium text-[#666876]">Price:</label>
               <input
                 type="text"
-                className="w-full border border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
+                className="w-full border-2 border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
               <label className="block text-md font-medium text-[#666876]">Quantity:</label>
               <input
                 type="text"
-                className="w-full border border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
+                className="w-full border-2 border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
               />
@@ -80,7 +84,7 @@ const NewProduct: React.FC = () => {
               {/* Submit Button */}
               <div className="flex justify-left mt-10">
                 <button
-                  className="bg-[#FFEA35] text-white font-semibold py-2 px-4 rounded-md hover:bg-[#FCE96B]"
+                  className="bg-[#4DA14D] font-semibold text-white px-4 py-2 rounded-md hover:bg-[#8CCC8C]"
                   onClick={handleSubmit}
                 >
                   + Add Product
@@ -91,7 +95,7 @@ const NewProduct: React.FC = () => {
             {/* Image Upload (30%) */}
             <div className="flex-[3.5]">
               <label className="block text-md font-medium text-[#666876] mb-2">Product Image:</label>
-              <div className="w-full border border-[#FFF281] rounded-md flex items-center justify-center h-80 md:h-96">
+              <div className="w-full border-2 border-[#FFF281] rounded-md flex items-center justify-center h-80 md:h-96">
                 {image ? (
                   <img
                     src={URL.createObjectURL(image)}

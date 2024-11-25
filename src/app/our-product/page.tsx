@@ -4,6 +4,7 @@ import Header from "@/components/ui/Header";
 import AdminSidebar from "@/components/ui/AdminSideBar";
 import ProductItem from "@/components/ui/ProductDetails";
 import Link from "next/link";
+import Sort from "@/components/ui/Sort"; // Impor komponen Sort
 
 const products = [
   { imageUrl: 'https://via.placeholder.com/100', name: 'Product A', category: 'Category A', price: 'Rp 100,000', quantity: 10 },
@@ -13,11 +14,11 @@ const products = [
 
 const OurProduct: React.FC = () => {
   return (
-    <div className="flex flex-col h-screen"> {/* Change to flex-col so header is on top and sidebar is below */}
+    <div className="flex flex-col h-screen">
       {/* Header */}
       <Header />
 
-      <div className="flex flex-1 overflow-hidden"> {/* Sidebar and Main Content side by side */}
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <AdminSidebar />
         
@@ -25,12 +26,16 @@ const OurProduct: React.FC = () => {
         <div className="flex-1 bg-white p-6 overflow-y-auto">
           <div className="flex justify-between items-center mb-5">
             <h1 className="text-2xl text-[#666876] font-bold">Our Product</h1>
-            {/* Add New Product Button */}
-            <Link href="/new-product">
-              <button className="bg-[#4DA14D] font-semibold text-sm text-white px-4 py-2 rounded-md hover:bg-[#8CCC8C]">
-                + Add New Product
-              </button>
-            </Link>
+            <div className="flex items-center space-x-4">
+              {/* Sort Component */}
+              <Sort /> {/* Komponen Sort di sini */}
+              {/* Add New Product Button */}
+              <Link href="/new-product">
+                <button className="bg-[#4DA14D] font-semibold text-sm text-white px-4 py-2 rounded-md hover:bg-[#8CCC8C]">
+                  + Add New Product
+                </button>
+              </Link>
+            </div>
           </div>
 
           <div className="bg-[#FFF281] text-[#666876] p-4 mb-4 rounded-md">

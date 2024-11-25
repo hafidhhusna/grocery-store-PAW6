@@ -7,6 +7,7 @@ import SideBar from "@/components/ui/SideBar";
 import ProductBox from "@/components/ui/ProductBox";
 import Link from "next/link";
 import { SessionProvider, useSession } from "next-auth/react";
+import Sort from "@/components/ui/Sort";  // Import komponen Sort
 
 interface Product {
   id: string;
@@ -85,9 +86,14 @@ const CategoryPage: React.FC = () => {
 
         {/* Content */}
         <div className="p-8 flex-1">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            <Link href="/category">Categories &gt; {categoryName}</Link>
-          </h2>
+          {/* Header for category with Sort on the right */}
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-semibold text-gray-800">
+              <Link href="/category">Categories &gt; {categoryName}</Link>
+            </h2>
+            {/* Sort Component on the right */}
+            <Sort />
+          </div>
 
           {/* Loading and Error Handling */}
           {loading && <p>Loading products...</p>}

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Header from "@/components/ui/Header";
-import SideBar from "@/components/ui/SideBar";
+import AdminSidebar from "@/components/ui/AdminSideBar";
 
 const NewProduct: React.FC = () => {
   const [productName, setProductName] = useState("");
@@ -37,7 +37,7 @@ const NewProduct: React.FC = () => {
       {/* Main Content Section */}
       <div className="flex flex-1 w-full">
         {/* Sidebar */}
-        <SideBar />
+        <AdminSidebar />
 
         {/* Form Section */}
         <div className="flex-1 p-6 bg-white shadow-lg flex flex-col">

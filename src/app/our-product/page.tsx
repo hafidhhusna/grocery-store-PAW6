@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Header from "@/components/ui/Header";
-import SideBar from "@/components/ui/SideBar";
+import AdminSidebar from "@/components/ui/AdminSideBar";
 import ProductItem from "@/components/ui/ProductDetails";
 import Link from "next/link";
 
@@ -19,7 +19,7 @@ const OurProduct: React.FC = () => {
 
       <div className="flex flex-1 overflow-hidden"> {/* Sidebar and Main Content side by side */}
         {/* Sidebar */}
-        <SideBar />
+        <AdminSidebar />
         
         {/* Main Content */}
         <div className="flex-1 bg-white p-6 overflow-y-auto">

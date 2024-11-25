@@ -11,7 +11,7 @@ import { signOut } from 'next-auth/react';  // Import the signOut function
 const AdminSidebar: FC = () => {
     const menus = [
         { name: "Our Product", link: '/our-product', icon: AiFillProduct },
-        { name: "Orders", link: '/orders', icon: HiMiniShoppingBag },
+        { name: "Orders", link: '/order-list', icon: HiMiniShoppingBag },
     ];
     const [open, setOpen] = useState(true);
 

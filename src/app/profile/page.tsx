@@ -13,10 +13,10 @@ const ProfilePage: React.FC = () => {
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setProfileImage(imageUrl);
-        }
+        // if (file) {
+        //     const imageUrl = URL.createObjectURL(file);
+        //     setProfileImage(imageUrl);
+        // }
     };
 
     return (

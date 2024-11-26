@@ -5,6 +5,9 @@ import Header from '@/components/ui/Header';
 import SideBar from '@/components/ui/SideBar';
 import PaymentStatus from '@/components/ui/PaymentStatus';
 import { useSearchParams } from "next/navigation";
+import { SessionProvider } from 'next-auth/react';
+import { Suspense } from "react";
+
 
 const PaymentPage: React.FC = () => {
   // Retrieve the `status` parameter from the URL
@@ -34,4 +37,12 @@ const PaymentPage: React.FC = () => {
   );
 };
 
-export default PaymentPage;
+export default function Page() {
+  return (
+    <SessionProvider>
+      <Suspense fallback={<p>Loading...</p>}>
+        <PaymentPage />
+      </Suspense>
+    </SessionProvider>
+  );
+}

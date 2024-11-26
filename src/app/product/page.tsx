@@ -8,6 +8,7 @@ import ProductBox from "@/components/ui/ProductBox";
 import Link from "next/link";
 import { SessionProvider, useSession } from "next-auth/react";
 import Sort from "@/components/ui/Sort";
+import { Suspense } from "react";
 
 interface Product {
   id: string;
@@ -142,7 +143,9 @@ const CategoryPage: React.FC = () => {
 export default function Page() {
   return (
     <SessionProvider>
-      <CategoryPage />
+      <Suspense fallback={<p>Loading...</p>}>
+        <CategoryPage />
+      </Suspense>
     </SessionProvider>
   );
 }

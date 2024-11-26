@@ -1,7 +1,10 @@
-import { NextResponse} from "next/server";
+export const dynamic = 'force-dynamic';
+
+import { NextRequest, NextResponse} from "next/server";
 import { prisma } from "@/lib/db";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  console.log(req)
   try {
     // Fetch all orders without filtering by userId
     const orders = await prisma.order.findMany({

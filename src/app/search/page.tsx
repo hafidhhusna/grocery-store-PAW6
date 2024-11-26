@@ -7,6 +7,8 @@ import SideBar from '@/components/ui/SideBar';
 import ProductBox from '@/components/ui/ProductBox';
 import Link from 'next/link';
 import { SessionProvider, useSession } from 'next-auth/react';
+import { Suspense } from "react";
+
 
 interface Product {
   id: string;
@@ -94,7 +96,9 @@ const SearchPage: React.FC = () => {
 export default function Page() {
   return (
     <SessionProvider>
-      <SearchPage />
+      <Suspense fallback={<p>Loading...</p>}>
+        <SearchPage />
+      </Suspense>
     </SessionProvider>
   );
 }

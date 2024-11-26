@@ -3,14 +3,24 @@ import { PiNotePencilBold } from 'react-icons/pi';
 import { FaTrashAlt } from 'react-icons/fa';
 
 interface ProductItemProps {
+  id: string; // Add id to props
   imageUrl: string;
   name: string;
   category: string;
   price: string;
   quantity: number;
+  onDelete: (id: string) => void; // Callback for parent to update the UI after deletion
 }
 
-export const ProductItem: React.FC<ProductItemProps> = ({ imageUrl, name, category, price, quantity }) => {
+export const ProductItem: React.FC<ProductItemProps> = ({
+  id,
+  imageUrl,
+  name,
+  category,
+  price,
+  quantity,
+  onDelete,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedName, setUpdatedName] = useState(name);
   const [updatedCategory, setUpdatedCategory] = useState(category);
@@ -26,6 +36,30 @@ export const ProductItem: React.FC<ProductItemProps> = ({ imageUrl, name, catego
   const handleSave = () => {
     // Save logic here (e.g., send updated data to the server)
     setIsEditing(false);
+  };
+
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(`Are you sure you want to delete ${name}?`);
+    if (!confirmDelete) return;
+
+    try {
+      const response = await fetch(`/api/product/${id}`, {
+        method: 'DELETE',
+      });
+
+      console.log(response);
+
+      if (response.ok) {
+        onDelete(id); // Notify parent to remove product from the list
+        alert('Product deleted successfully.');
+      } else {
+        const error = await response.json();
+        alert(`Failed to delete product: ${error.error}`);
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      alert('An unexpected error occurred. Please try again later.');
+    }
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,7 +166,10 @@ export const ProductItem: React.FC<ProductItemProps> = ({ imageUrl, name, catego
           <PiNotePencilBold className="mr-2" />
           {isEditing ? 'Save' : 'Update'}
         </button>
-        <button className="flex items-center bg-red-200 text-red-700 px-4 py-2 rounded-md hover:bg-red-300">
+        <button
+          className="flex items-center bg-red-200 text-red-700 px-4 py-2 rounded-md hover:bg-red-300"
+          onClick={handleDelete}
+        >
           <FaTrashAlt className="mr-2" />
           Delete
         </button>

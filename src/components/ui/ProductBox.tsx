@@ -60,7 +60,10 @@ const ProductBox: React.FC<ProductBoxProps> = ({ name, price, imageSrc, productI
   };
 
   return (
-    <div className="flex flex-col items-center w-40 h-64 border-2 border-yellow-300 bg-white rounded-lg shadow-md p-2">
+    <div
+      className="flex flex-col items-center w-40 h-64 border-2 border-yellow-300 bg-white rounded-lg shadow-md p-2 
+      transition-transform duration-200 transform hover:shadow-lg hover:scale-105"
+    >
       {/* Product Image */}
       <div className="w-24 h-24 border-2 border-yellow-300 bg-white rounded-md mb-2 flex items-center justify-center overflow-hidden">
         <img src={imageSrc} alt={name} className="object-cover w-full h-full" />

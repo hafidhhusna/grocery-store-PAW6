@@ -10,19 +10,18 @@ interface Product {
 
 interface SummaryProps {
   cartItems: Product[];
+  onConfirm: () => void;
 }
 
-function Summary({ cartItems }: SummaryProps) {
-  const shippingCost = 10000; // Example shipping cost
-  const taxRate = 0.1; // 10% tax rate
+function Summary({ cartItems, onConfirm }: SummaryProps) {
+  const shippingCost = 10000;
+  const taxRate = 0.1;
 
-  // Calculate subtotal
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  // Calculate tax and total
   const tax = subtotal * taxRate;
   const total = subtotal + shippingCost + tax;
 
@@ -50,7 +49,7 @@ function Summary({ cartItems }: SummaryProps) {
         <p>TOTAL</p>
         <p>Rp {total.toFixed(2).replace('.', ',')}</p>
       </div>
-      <button className="checkout-button">Checkout</button>
+      <button className="checkout-button" onClick={onConfirm}>Checkout</button>
     </div>
   );
 }

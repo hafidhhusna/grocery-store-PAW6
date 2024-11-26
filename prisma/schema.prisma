@@ -16,13 +16,14 @@ datasource db {
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
-  email         String?  @unique
+  email         String?   @unique
   emailVerified DateTime?
-  username      String?  @unique
+  username      String?   @unique
   image         String?
   password      String?
   accounts      Account[]
   cart          Cart? // Relation to the Cart model (one-to-one)
+  Order         Order[]
 }
 
 model Account {
@@ -48,16 +49,13 @@ model Account {
 model Product {
   id         String     @id @default(auto()) @map("_id") @db.ObjectId
   name       String
-  detail     String
   price      Float
   quantity   Int
   categoryId String     @db.ObjectId
   category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
-  images     String[] // Array of image URLs for the product
-  brand      String? // Optional brand information
-  tags       String[] // Tags for better search and categorization
+  images     String[]
   CartItem   CartItem[]
 }
 
@@ -90,4 +88,17 @@ model CartItem {
   price     Float // Price at the time of adding to cart
   total     Float? // Optional total, can be handled in the application logic
   addedAt   DateTime @default(now())
+  orderId   String?  @db.ObjectId
+  order     Order?   @relation("OrderItems", fields: [orderId], references: [id], onDelete: Cascade)
+  isCheckout Boolean @default(false) // New property
+}
+
+model Order {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String     @db.ObjectId
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items      CartItem[] @relation("OrderItems") // Relation to CartItem
+  totalPrice Float // Total price of the order
+  orderNo    String     @unique // Unique order number
+  createdAt  DateTime   @default(now()) // Date the order was created
 }

@@ -8,11 +8,12 @@ import Summary from "@/components/ui/Summary";
 import { SessionProvider, useSession } from "next-auth/react";
 
 interface CartItemData {
-  id: string; // Changed to string for consistency with MongoDB ObjectId
+  id: string;
   name: string;
   price: number;
   quantity: number;
   selected: boolean;
+  isCheckout: boolean; // New property to indicate checkout status
 }
 
 function App() {
@@ -25,24 +26,29 @@ function App() {
   useEffect(() => {
     const fetchCartItems = async () => {
       if (status === "loading") return; // Wait until session is loaded
-      if (!session?.user?.id) { 
+      if (!session?.user?.id) {
         setError("User is not authenticated.");
         setLoading(false);
         return;
       }
-
+    
       try {
         const res = await fetch(`/api/user/${session.user.id}/cart`);
         if (!res.ok) throw new Error("Failed to fetch cart items");
         const data = await res.json();
-        // Transform the response data and add a 'selected' property for each item
-        const items: CartItemData[] = data.items.map((item: any) => ({
-          id: item.id,
-          name: item.product.name,
-          price: item.product.price,
-          quantity: item.quantity,
-          selected: false, // Default to not selected
-        }));
+    
+        // Transform the response data and filter out checked-out items
+        const items: CartItemData[] = data.items
+          .map((item: any) => ({
+            id: item.id,
+            name: item.product.name,
+            price: item.product.price,
+            quantity: item.quantity,
+            selected: false, // Default to not selected
+            isCheckout: item.isCheckout || false, // Assume backend includes this flag
+          }))
+          .filter((item) => !item.isCheckout); // Filter out items that are checked out
+    
         setCartItems(items);
       } catch (err) {
         setError((err as Error).message);
@@ -97,6 +103,39 @@ function App() {
       alert("Failed to update item quantity.");
     }
   };
+
+  const handleConfirm = async () => {
+    try {
+      if (!selectedItems.length) {
+        alert("Please select items to checkout.");
+        return;
+      }
+
+      console.log(JSON.stringify({ items: selectedItems.map(item => ({ cartItemId: item.id }))}))
+  
+      const res = await fetch(`/api/user/${session?.user?.id}/order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: selectedItems.map(item => ({ cartItemId: item.id })) }),
+      });
+  
+      if (!res.ok) {
+        const { error } = await res.json();
+        throw new Error(error || "Failed to create order.");
+      }
+  
+      const { order } = await res.json();
+      alert("Order created successfully!");
+      console.log("Order:", order);
+  
+      // Optional: Clear the cart or refresh state
+      setCartItems((prevItems) => prevItems.filter(item => !item.selected));
+    } catch (error) {
+      console.error("Error creating order:", error);
+      alert("Failed to complete the order. Please try again.");
+    }
+  };
+  
   
 
   // Filter selected items for the Summary component
@@ -137,7 +176,7 @@ function App() {
                     />
                   ))}
                 </div>
-                <Summary cartItems={selectedItems} />
+                <Summary cartItems={selectedItems} onConfirm={handleConfirm}/>
               </div>
             )}
           </div>

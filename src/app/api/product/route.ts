@@ -38,9 +38,35 @@ export async function GET(req: Request) {
 
 
 export async function POST(request: Request) {
-  const data = await request.json();
-  const product = await prisma.product.create({ data });
-  return NextResponse.json(product);
+  const data = await request.formData();
+  const productName = data.get('productName') as string;
+  const categoryId = data.get('categoryId') as string;
+  const price = parseFloat(data.get('price') as string);
+  const quantity = parseInt(data.get('quantity') as string, 10);
+  const image = data.get('image') as string | null;
+
+  let imageUrl = null;
+  if (image) {
+    // You can upload the image to a storage service and get the URL
+    // For example, you can upload it to a public folder or use cloud storage
+    // Assuming imageUrl is the URL returned after upload
+    imageUrl = "/path/to/your/uploaded/image.jpg";
+  }
+
+  try {
+    const product = await prisma.product.create({
+      data: {
+        name: productName,
+        categoryId: categoryId,
+        price,
+        quantity, // Store image URL
+      },
+    });
+    return NextResponse.json(product);
+  } catch (error) {
+    console.error("Error creating product:", error);
+    return NextResponse.json({ error: "Failed to create product" }, { status: 500 });
+  }
 }
 
 

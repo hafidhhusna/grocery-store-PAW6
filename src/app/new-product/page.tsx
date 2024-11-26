@@ -1,15 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/ui/Header";
 import AdminSidebar from "@/components/ui/AdminSideBar";
 
 const NewProduct: React.FC = () => {
   const [productName, setProductName] = useState("");
-  const [categories, setCategories] = useState("");
+  const [categories, setCategories] = useState<any[]>([]); // Array of categories
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [image, setImage] = useState<File | null>(null);
+
+  // Fetch categories from the API when the component mounts
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/category');
+        const data = await res.json();
+        setCategories(data); // Assuming data is an array of categories
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -17,16 +33,29 @@ const NewProduct: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    console.log("iki", selectedCategory);
     const formData = new FormData();
     formData.append("productName", productName);
-    formData.append("categories", categories);
+    formData.append("categoryId", selectedCategory);
     formData.append("price", price);
     formData.append("quantity", quantity);
-    if (image) formData.append("image", image);
+    formData.append("image", "test.jpg");
 
     // Save data or send to API
     console.log("Form Submitted");
+    try {
+      const res = await fetch("/api/product", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      console.log("Product added:", data);
+      alert("Product added");
+      // Optionally reset form or navigate to another page
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
   };
 
   return (
@@ -58,13 +87,15 @@ const NewProduct: React.FC = () => {
               <label className="block text-md font-medium text-[#666876]">Categories:</label>
               <select
                 className="w-full border-2 border-[#FFF281] rounded-md p-2 focus:outline-none mb-6 text-[#666876]"
-                value={categories}
-                onChange={(e) => setCategories(e.target.value)}
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
               >
                 <option value="">Select Category</option>
-                <option value="Category A">Category A</option>
-                <option value="Category B">Category B</option>
-                <option value="Category C">Category C</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
               <label className="block text-md font-medium text-[#666876]">Price:</label>
               <input

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
 import { prisma } from 'src/lib/db'
 
 export async function GET(req: Request) {
@@ -55,7 +54,6 @@ export async function POST(request: Request) {
   const quantity = parseInt(data.get('quantity') as string, 10);
   const image = data.get('image') as string | null;
 
-  let imageUrl = null;
   if (image) {
     // You can upload the image to a storage service and get the URL
     // For example, you can upload it to a public folder or use cloud storage

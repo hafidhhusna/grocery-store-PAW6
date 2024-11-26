@@ -2,7 +2,7 @@ import Midtrans, { Snap } from 'midtrans-client';
 import { NextRequest, NextResponse } from "next/server";
 
 
-let snap = new Snap({
+const snap = new Snap({
     isProduction: false,
     serverKey: process.env.NEXT_PUBLIC_SECRET || '',
     clientKey: process.env.NEXT_PUBLIC_CLIENT || '',

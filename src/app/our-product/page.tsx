@@ -20,6 +20,7 @@ const OurProduct: React.FC = () => {
       const response = await fetch(`/api/product?sort=${sortOrder}&search=${searchQuery}&sortField=${sortField}`);
       if (!response.ok) throw new Error("Failed to fetch products");
       const data = await response.json();
+      console.log(data);
       setProducts(data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -31,12 +32,15 @@ const OurProduct: React.FC = () => {
   useEffect(() => {
 
     fetchProducts();
-  }, [sortField, sortOrder, searchQuery, categoryId]); // Re-fetch when sort, search, or category change
+  }, [sortField, sortOrder, searchQuery]); // Re-fetch when sort, search, or category change
 
   const handleDeleteProduct = (id: string) => {
     fetchProducts();
   };
 
+  const handleUpdateProduct = (id: string) => {
+    fetchProducts();
+  };
   return (
     <div className="flex flex-col h-screen">
       {/* Header */}
@@ -89,10 +93,12 @@ const OurProduct: React.FC = () => {
                 id={product.id}
                 imageUrl={product.imageUrl}
                 name={product.name}
-                category={product.category}
+                category={product.categoryName}
+                categoryId={product.id}
                 price={product.price}
                 quantity={product.quantity}
-                onDelete={handleDeleteProduct} // Pass down the delete handler
+                onDelete={handleDeleteProduct}
+                onUpdate={handleUpdateProduct} // Pass down the delete handler
               />))
           )}
         </div>

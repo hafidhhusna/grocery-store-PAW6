@@ -116,12 +116,16 @@ function App() {
             {!loading && !error && (
               <div className="cart-container">
                 <div className="cart-items">
-                  <div className="cart-header">
-                    <span>Product Name</span>
-                    <span>Price per pcs</span>
-                    <span>Qty</span>
-                    <span>Total Price</span>
-                  </div>
+                <div className="cart-header">
+  <span></span> {/* Kolom kosong untuk checkbox */}
+  <span>Image</span>
+  <span>Product Name</span>
+  <span>Price per pcs</span>
+  <span>Qty</span>
+  <span>Total Price</span>
+  <span></span> {/* Kolom kosong untuk trash */}
+</div>
+
                   {cartItems.map((item) => (
                     <CartItem
                       key={item.id}

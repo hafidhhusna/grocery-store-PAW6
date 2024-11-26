@@ -45,29 +45,40 @@
   padding: 10px;
   border-radius: 10px;
   margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .cart-header span {
-  flex: 1;
-  text-align: left;
-  margin-left: 20px;
-}
-
-.cart-header span {
-  flex: 1;
-  text-align: left;
+  text-align: center;
+  padding: 5px 0;
 }
 
 .cart-header span:nth-child(1) {
-  margin-left: 90px; /* Sesuaikan nilai untuk "Product Name" */
+  flex: 0 0 5%; /* Checkbox */
 }
 
 .cart-header span:nth-child(2) {
-  margin-left: 90px; /* Sesuaikan nilai untuk "Price per pcs" */
+  flex: 0 0 10%; /* Image */
 }
 
 .cart-header span:nth-child(3) {
-  margin-left: 60px; /* Sesuaikan nilai untuk "Qty" */
+  flex: 0 0 25%; /* Product Name */
+}
+
+.cart-header span:nth-child(4) {
+  flex: 0 0 20%; /* Price */
+}
+
+.cart-header span:nth-child(5) {
+  flex: 0 0 15%; /* Qty */
+}
+
+.cart-header span:nth-child(6) {
+  flex: 0 0 20%; /* Total */
+}
+
+.cart-header span:nth-child(7) {
+  flex: 0 0 5%; /* Delete */
 }
 
 

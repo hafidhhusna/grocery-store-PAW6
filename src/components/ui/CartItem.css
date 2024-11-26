@@ -1,80 +1,96 @@
-/* components/CartItem.css */
 .cart-item {
-    display: flex;
-    align-items: center;
-    background-color: #FFFFFF;
-    border: 2px solid #FFF281;
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 18px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Poppins', sans-serif;
-  }
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 2px solid #FFF281;
+  border-radius: 10px;
+  padding: 8px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+.cart-column {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Proportions */
+.cart-checkbox {
+  flex: 0 0 5%; /* 5% */
   
-  .product-checkbox {
-    margin-right: 12px;
-  }
-  
-  .cart-image {
-    width: 70px;
-    height: 70px;
-    background-color: #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-  }
-  
-  .cart-details {
-    flex: 2;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .product-name {
-    font-size: 16px;
-    color: #666876;
-    font-weight: 200;
-  }
-  
-  .product-price {
-    font-size: 16px;
-    color: #666876;
-    margin-left: 35px;
-  }
-  
-  .cart-quantity {
-    display: flex;
-    align-items: center;
-    margin-left: 50px;
-  }
-  
-  .qty-btn {
-    width: 25px;
-    height: 25px;
-    background-color: #FFD700;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .qty-number {
-    margin: 0 5px;
-  }
-  
-  .price-total {
-    flex: 1;
-    text-align: right;
-    font-size: 16px;
-    color: #555;
-    margin-right: 10px;
-  }
-  
-  .delete-icon {
-    cursor: pointer;
-    color: #FFD700;
-    margin-left: 20px;
-  }
-  
+}
+
+.product-checkbox {
+  width: 15px; /* Perbesar ukuran checkbox */
+  height: 15px;
+  cursor: pointer;
+}
+
+.cart-image {
+  flex: 0 0 10%; /* 10% */
+  width: 70px; /* Tetapkan lebar dan tinggi sama */
+  height: 90px;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-name {
+  flex: 0 0 25%; /* 20% */
+}
+
+.cart-price {
+  flex: 0 0 20%; /* 20% */
+}
+
+.cart-quantity {
+  flex: 0 0 15%; /* 20% */
+  display: flex;
+  align-items: center;
+}
+
+.cart-total {
+  flex: 0 0 20%; /* 20% */
+  text-align: center;
+}
+
+.cart-delete {
+  flex: 0 0 5%; /* 5% */
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Quantity Button */
+.qty-btn {
+  width: 25px;
+  height: 25px;
+  background-color: #FFD700;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.qty-number {
+  margin: 0 5px;
+}
+
+/* Other Styles */
+.product-name {
+  font-size: 16px;
+  color: #666876;
+  font-weight: 200;
+}
+
+.product-price {
+  font-size: 16px;
+  color: #666876;
+}
+
+.delete-icon {
+  color: #FFD700;
+  font-size: 20px;
+}

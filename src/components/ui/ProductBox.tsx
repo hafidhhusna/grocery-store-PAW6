@@ -7,10 +7,11 @@ interface ProductBoxProps {
   price: number;
   imageSrc: string;
   productId: string;
+  stock: number; // Menambahkan properti stok
   userId?: string; // Optional: Pass user ID if needed
 }
 
-const ProductBox: React.FC<ProductBoxProps> = ({ name, price, imageSrc, productId, userId }) => {
+const ProductBox: React.FC<ProductBoxProps> = ({ name, price, imageSrc, productId, stock, userId }) => {
   const [quantity, setQuantity] = useState(0);
 
   const handleAddToCart = () => {
@@ -59,15 +60,23 @@ const ProductBox: React.FC<ProductBoxProps> = ({ name, price, imageSrc, productI
   };
 
   return (
-    <div className="flex flex-col items-center w-40 h-64 border-2 border-yellow-300 bg-white rounded-lg shadow-md p-2">
+    <div
+      className="flex flex-col items-center w-40 h-64 border-2 border-yellow-300 bg-white rounded-lg shadow-md p-2 
+      transition-transform duration-200 transform hover:shadow-lg hover:scale-105"
+    >
       {/* Product Image */}
       <div className="w-24 h-24 border-2 border-yellow-300 bg-white rounded-md mb-2 flex items-center justify-center overflow-hidden">
         <img src={imageSrc} alt={name} className="object-cover w-full h-full" />
       </div>
 
-      {/* Product Name and Price */}
+      {/* Product Name */}
       <p className="text-gray-700 font-semibold text-center">{name}</p>
-      <p className="text-gray-600 text-center">Rp. {price.toFixed(2)}</p>
+
+      {/* Stock and Price */}
+      <div className="text-center">
+        <p className="text-gray-500 text-xs">Stok: {stock}</p>
+        <p className="text-gray-600">Rp. {price.toFixed(2)}</p>
+      </div>
 
       {/* Add to Cart or Quantity Selector */}
       {quantity === 0 ? (

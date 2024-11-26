@@ -15,6 +15,7 @@ interface Product {
   detail: string;
   price: number;
   images: string;
+  quantity: number;
   category: {
     name: string;
   };
@@ -60,6 +61,7 @@ const CategoryPage: React.FC = () => {
         const response = await fetch(`/api/product?category=${categoryId}`);
         if (!response.ok) throw new Error("Failed to fetch products");
         const data = await response.json();
+        console.log(data);
         setProducts(data);
         setSortedProducts(data); // Initialize sorted products
       } catch (err) {
@@ -107,8 +109,8 @@ const CategoryPage: React.FC = () => {
           {loading && <p>Loading products...</p>}
           {error && <p className="text-red-500">{error}</p>}
           {!loading && !error && (
-            <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-6">
-              {sortedProducts.map((product) => (
+            <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-3">
+              {products.map((product) => (
                 <ProductBox
                   key={product.id}
                   name={product.name}
@@ -116,6 +118,7 @@ const CategoryPage: React.FC = () => {
                   imageSrc={product.images}
                   productId={product.id}
                   userId={session?.user?.id}
+                  stock={product.quantity}
                 />
               ))}
             </div>

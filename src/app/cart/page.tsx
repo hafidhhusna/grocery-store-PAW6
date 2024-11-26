@@ -7,8 +7,7 @@ import CartItem from "@/components/ui/CartItem";
 import Summary from "@/components/ui/Summary";
 import { SessionProvider, useSession } from "next-auth/react";
 import {prisma} from "../../lib/db";
-import Midtrans from "@abdulrahmanreza/midtrans-client";
-import paymentscript from "@/lib/midtrans";
+import Midtrans from "midtrans-client";
 
 interface CartItemData {
   id: string;
@@ -20,6 +19,25 @@ interface CartItemData {
 }
 
 function App() {
+
+  useEffect(() => {
+    const snapScript: string = "https://app.sandbox.midtrans.com/snap/snap.js"
+    const clientKey: any = process.env.NEXT_PUBLIC_CLIENT
+
+    const script = document.createElement('script')
+    script.src = snapScript
+
+    script.setAttribute("data-client-key", clientKey)
+    script.async = true
+
+    document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, []);
+
+
   const { data: session, status } = useSession();
   const [cartItems, setCartItems] = useState<CartItemData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -121,8 +139,6 @@ function App() {
         return;
       }
 
-      await paymentscript();
-
       console.log(JSON.stringify({ items: selectedItems.map(item => ({ cartItemId: item.id }))}))
 
       const data = {
@@ -134,14 +150,25 @@ function App() {
         }))
       }
 
-      const response = await fetch("/api/payment/tokenizer", {
-        method: "POST",
-        body: JSON.stringify(data)
-      })
+      console.log(JSON.stringify(data))
 
-      const requestData = await response.json()
-      console.log(requestData)
-      window.snap.pay(requestData.token)
+      try{
+        const response = await fetch("/api/payment/tokenizer", {
+          method: "POST",
+          body: JSON.stringify(data)
+        })
+  
+        const requestData = await response.json()
+        console.log(requestData)
+        if(!requestData || !requestData.token){
+          throw new Error('Invalid response data')
+        }
+
+        ;(window as any).snap.pay(requestData.token)
+
+      } catch(error:any){
+        console.error('Error during checkout: ', error.message)
+      }
 
         const res = await fetch(`/api/user/${session?.user?.id}/order`, {
           method: "POST",

@@ -101,7 +101,7 @@ const CategoryPage: React.FC = () => {
 
           {/* Display Products */}
           {!loading && !error && (
-            <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-6">
+            <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-3">
               {products.map((product) => (
                 <ProductBox
                   key={product.id}

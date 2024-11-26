@@ -1,5 +1,5 @@
-import React from 'react';
-import './Summary.css';
+import React from "react";
+import "./Summary.css";
 
 interface Product {
   id: string;
@@ -31,24 +31,24 @@ function Summary({ cartItems }: SummaryProps) {
       {cartItems.map((product) => (
         <div className="checkout-item" key={product.id}>
           <p>{product.name}</p>
-          <p>Rp {((product.price * product.quantity).toFixed(2).replace('.', ','))}</p>
+          <p>Rp {(product.price * product.quantity).toFixed(2).replace(".", ",")}</p>
         </div>
       ))}
       <div className="checkout-item subtotal">
         <p>SUBTOTAL</p>
-        <p>Rp {subtotal.toFixed(2).replace('.', ',')}</p>
+        <p>Rp {subtotal.toFixed(2).replace(".", ",")}</p>
       </div>
       <div className="checkout-item">
         <p>Shipping Cost</p>
-        <p>Rp {shippingCost.toFixed(2).replace('.', ',')}</p>
+        <p>Rp {shippingCost.toFixed(2).replace(".", ",")}</p>
       </div>
       <div className="checkout-item">
         <p>Tax</p>
-        <p>Rp {tax.toFixed(2).replace('.', ',')}</p>
+        <p>Rp {tax.toFixed(2).replace(".", ",")}</p>
       </div>
       <div className="checkout-total">
         <p>TOTAL</p>
-        <p>Rp {total.toFixed(2).replace('.', ',')}</p>
+        <p>Rp {total.toFixed(2).replace(".", ",")}</p>
       </div>
       <button className="checkout-button">Checkout</button>
     </div>

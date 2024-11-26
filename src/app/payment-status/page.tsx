@@ -10,7 +10,7 @@ const PaymentPage: React.FC = () => {
       <Header />
 
       {/* Main Content Section */}
-      <div className="flex flex-1 h-screen bg-gray-100">
+      <div className="flex flex-1 h-screen bg-gray-100 overflow-hidden">
         {/* Sidebar */}
         <SideBar />
 

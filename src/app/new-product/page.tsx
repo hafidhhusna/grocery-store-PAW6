@@ -35,7 +35,7 @@ const NewProduct: React.FC = () => {
       <Header />
 
       {/* Main Content Section */}
-      <div className="flex flex-1 w-full">
+      <div className="flex flex-1 w-full overflow-hidden">
         {/* Sidebar */}
         <AdminSidebar />
 

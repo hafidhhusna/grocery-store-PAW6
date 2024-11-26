@@ -26,7 +26,7 @@ const Page: React.FC = () => {
       {/* Header Section */}
       <Header />
 
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         {/* SideBar Section */}
         <SideBar />
 

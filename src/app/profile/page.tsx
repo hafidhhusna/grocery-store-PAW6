@@ -24,7 +24,7 @@ const ProfilePage: React.FC = () => {
             {/* Header */}
             <Header />
 
-            <div className="flex flex-1">
+            <div className="flex flex-1 overflow-hidden">
                 {/* Sidebar */}
                 <SideBar />
 

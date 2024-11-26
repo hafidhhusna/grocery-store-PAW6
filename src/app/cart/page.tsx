@@ -6,6 +6,9 @@ import SideBar from "@/components/ui/SideBar";
 import CartItem from "@/components/ui/CartItem";
 import Summary from "@/components/ui/Summary";
 import { SessionProvider, useSession } from "next-auth/react";
+import {prisma} from "../../lib/db";
+import Midtrans from "@abdulrahmanreza/midtrans-client";
+import paymentscript from "@/lib/midtrans";
 
 interface CartItemData {
   id: string;
@@ -21,6 +24,11 @@ function App() {
   const [cartItems, setCartItems] = useState<CartItemData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  // useEffect(() =>{
+  //   paymentscript();
+  // }, []);
+
 
   // Fetch cart items from API only if the user is authenticated
   useEffect(() => {
@@ -112,26 +120,46 @@ function App() {
         return;
       }
 
+      await paymentscript();
+
       console.log(JSON.stringify({ items: selectedItems.map(item => ({ cartItemId: item.id }))}))
-  
-      const res = await fetch(`/api/user/${session?.user?.id}/order`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: selectedItems.map(item => ({ cartItemId: item.id })) }),
-      });
-  
-      if (!res.ok) {
-        const { error } = await res.json();
-        throw new Error(error || "Failed to create order.");
+
+      const data = {
+        items: selectedItems.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity
+        }))
       }
-  
-      const { order } = await res.json();
-      alert("Order created successfully!");
-      console.log("Order:", order);
-  
-      // Optional: Clear the cart or refresh state
-      setCartItems((prevItems) => prevItems.filter(item => !item.selected));
-    } catch (error) {
+
+      const response = await fetch("/api/payment/tokenizer", {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+
+      const requestData = await response.json()
+      console.log(requestData)
+      window.snap.pay(requestData.token)
+
+        const res = await fetch(`/api/user/${session?.user?.id}/order`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: selectedItems.map(item => ({ cartItemId: item.id })) }),
+        });
+
+        if (!res.ok) {
+          const { error } = await res.json();
+          throw new Error(error || "Failed to create order.");
+        }
+
+        const { order } = await res.json();
+        alert("Order created successfully!");
+        console.log("Order:", order);
+    
+        // Optional: Clear the cart or refresh state
+        setCartItems((prevItems) => prevItems.filter(item => !item.selected));
+      } catch (error) {
       console.error("Error creating order:", error);
       alert("Failed to complete the order. Please try again.");
     }
@@ -195,7 +223,8 @@ function App() {
 export default function Page(){
   return (
   <SessionProvider>
-      <App></App>
+      <App>
+      </App>
   </SessionProvider>
   )
 };

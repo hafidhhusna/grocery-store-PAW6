@@ -1,7 +1,7 @@
-import Midtrans from '@abdulrahmanreza/midtrans-client';
+import * as midtransClient from 'midtrans-client';
 import { NextResponse } from "next/server";
 
-let snap = new Midtrans.Snap({
+let snap = new midtransClient.Snap({
     isProduction: false,
     serverKey: process.env.SECRET,
     clientKey: process.env.NEXT_PUBLIC_CLIENT,

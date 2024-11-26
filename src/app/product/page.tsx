@@ -77,55 +77,65 @@ const CategoryPage: React.FC = () => {
   }, [categoryId]);
 
   // Sorting logic
-  const handleSortChange = (sortField: string, sortOrder: string) => {
-    if (!sortField) {
-      // Reset to default order
-      setSortedProducts([...products]);
-      return;
-    }
-
-    const sorted = [...products].sort((a, b) => {
-      if (sortOrder === "asc") {
-        return a[sortField as keyof Product] > b[sortField as keyof Product] ? 1 : -1;
+  const handleSortChange = async (sortField: string, sortOrder: string) => {
+    try {
+      setLoading(true); // Set loading state while fetching sorted data
+      setError(null); // Clear any previous error
+  
+      // Fetch sorted products from the API
+      const response = await fetch(
+        `/api/product?category=${categoryId}&sortField=${sortField}&sort=${sortOrder}`
+      );
+  
+      if (!response.ok) {
+        throw new Error("Failed to fetch sorted products");
       }
-      return a[sortField as keyof Product] < b[sortField as keyof Product] ? 1 : -1;
-    });
-
-    setSortedProducts(sorted);
+  
+      const sortedData = await response.json();
+      setSortedProducts(sortedData); // Update state with sorted products
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
+  
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header />
-      <div className="flex flex-1 h-screen bg-gray-100">
-        <SideBar />
-        <div className="p-8 flex-1">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              <Link href="/category">Categories &gt; {categoryName}</Link>
-            </h2>
-            <Sort onSortChange={handleSortChange} />
-          </div>
-          {loading && <p>Loading products...</p>}
-          {error && <p className="text-red-500">{error}</p>}
-          {!loading && !error && (
-            <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-3">
-              {products.map((product) => (
-                <ProductBox
-                  key={product.id}
-                  name={product.name}
-                  price={product.price}
-                  imageSrc={product.images}
-                  productId={product.id}
-                  userId={session?.user?.id}
-                  stock={product.quantity}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+  <Header />
+  <div className="flex flex-1 h-screen bg-gray-100">
+    <SideBar />
+    <div className="p-8 flex-1 relative"> {/* Added relative positioning */}
+      <div className="absolute top-4 right-4 z-10 bg-white shadow-md p-2 rounded"> {/* Sort component styled */}
+        <Sort onSortChange={handleSortChange} />
       </div>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-semibold text-gray-800">
+          <Link href="/category">Categories &gt; {categoryName}</Link>
+        </h2>
+      </div>
+      {loading && <p>Loading products...</p>}
+      {error && <p className="text-red-500">{error}</p>}
+      {!loading && !error && (
+  <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-3">
+    {sortedProducts.map((product) => (
+      <ProductBox
+        key={product.id}
+        name={product.name}
+        price={product.price}
+        imageSrc={product.images}
+        productId={product.id}
+        userId={session?.user?.id}
+        stock={product.quantity}
+      />
+    ))}
+  </div>
+)}
     </div>
+  </div>
+</div>
+
   );
 };
 

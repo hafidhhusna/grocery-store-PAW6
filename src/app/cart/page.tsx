@@ -43,6 +43,7 @@ function App() {
     
       try {
         const res = await fetch(`/api/user/${session.user.id}/cart`);
+        console.log(res);
         if (!res.ok) throw new Error("Failed to fetch cart items");
         const data = await res.json();
     
@@ -56,7 +57,7 @@ function App() {
             selected: false, // Default to not selected
             isCheckout: item.isCheckout || false, // Assume backend includes this flag
           }))
-          .filter((item) => !item.isCheckout); // Filter out items that are checked out
+          .filter((item) => !(item.quantity == 0)); // Filter out items that are checked out
     
         setCartItems(items);
       } catch (err) {

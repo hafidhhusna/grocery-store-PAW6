@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PiNotePencilBold } from 'react-icons/pi';
 import { FaTrashAlt } from 'react-icons/fa';
 
 interface ProductItemProps {
-  id: string; // Add id to props
+  id: string;
   imageUrl: string;
   name: string;
   category: string;
-  price: string;
+  categoryId: string;
+  price: number;
   quantity: number;
-  onDelete: (id: string) => void; // Callback for parent to update the UI after deletion
+  onDelete: (id: string) => void;
+  onUpdate: (updatedProduct: any) => void; // Function to pass updated product to parent component
 }
 
 export const ProductItem: React.FC<ProductItemProps> = ({
@@ -17,25 +19,75 @@ export const ProductItem: React.FC<ProductItemProps> = ({
   imageUrl,
   name,
   category,
+  categoryId,
   price,
   quantity,
   onDelete,
+  onUpdate,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedName, setUpdatedName] = useState(name);
   const [updatedCategory, setUpdatedCategory] = useState(category);
-  const [updatedPrice, setUpdatedPrice] = useState(price);
+  const [updatedPrice, setUpdatedPrice] = useState(price.toString());
   const [updatedQuantity, setUpdatedQuantity] = useState(quantity.toString());
   const [updatedImageUrl, setUpdatedImageUrl] = useState(imageUrl);
   const [isImageHovered, setIsImageHovered] = useState(false);
+  const [categories, setCategories] = useState<any[]>([]); // Categories state
+  const [updatedCategoryId, setUpdatedCategoryId] = useState(categoryId);
+
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch('/api/category');
+        const data = await res.json();
+        setCategories(data); // Assuming data is an array of categories
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
   };
 
-  const handleSave = () => {
-    // Save logic here (e.g., send updated data to the server)
-    setIsEditing(false);
+  const handleSave = async () => {
+    // Send the updated data to the API
+    const priceAsFloat = parseFloat(updatedPrice);
+    const quantityAsFloat = parseFloat(updatedQuantity);
+
+    try {
+      const response = await fetch(`/api/product/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: updatedName,
+          category: updatedCategory,
+          categoryId: updatedCategoryId,
+          price: priceAsFloat,
+          quantity: quantityAsFloat,
+          imageUrl: updatedImageUrl,
+        }),
+      });
+
+      if (response.ok) {
+        const updatedProduct = await response.json();
+        onUpdate(updatedProduct); // Pass the updated product to the parent
+        setIsEditing(false);
+        alert('Product updated successfully.');
+      } else {
+        const error = await response.json();
+        alert(`Failed to update product: ${error.error}`);
+      }
+    } catch (error) {
+      console.error('Error updating product:', error);
+      alert('An unexpected error occurred. Please try again later.');
+    }
   };
 
   const handleDelete = async () => {
@@ -47,10 +99,8 @@ export const ProductItem: React.FC<ProductItemProps> = ({
         method: 'DELETE',
       });
 
-      console.log(response);
-
       if (response.ok) {
-        onDelete(id); // Notify parent to remove product from the list
+        onDelete(id);
         alert('Product deleted successfully.');
       } else {
         const error = await response.json();
@@ -81,10 +131,10 @@ export const ProductItem: React.FC<ProductItemProps> = ({
         onMouseEnter={() => setIsImageHovered(true)}
         onMouseLeave={() => setIsImageHovered(false)}
       >
-        <img 
-          src={updatedImageUrl} 
-          alt={updatedName} 
-          className="w-full h-full object-cover" 
+        <img
+          src={updatedImageUrl}
+          alt={updatedName}
+          className="w-full h-full object-cover"
         />
         {isEditing && isImageHovered && (
           <div className="absolute inset-0 flex justify-center items-center">
@@ -118,23 +168,31 @@ export const ProductItem: React.FC<ProductItemProps> = ({
         )}
       </div>
 
+      {/* Category */}
       <div className="flex flex-col justify-center text-center p-2" style={{ flexBasis: '18%' }}>
         {isEditing ? (
-          <input
-            type="text"
+          <select
             value={updatedCategory}
-            onChange={(e) => setUpdatedCategory(e.target.value)}
-            className="text-[#666876] break-words w-full border-b-2 border-gray-300 focus:outline-none"
-          />
+            onChange={(e) => {setUpdatedCategory(e.target.value); setUpdatedCategoryId(e.target.value);}}
+            className="text-[#666876] w-full border-b-2 border-gray-300 focus:outline-none"
+          >
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
         ) : (
           <span className="text-[#666876] break-words">{updatedCategory}</span>
         )}
       </div>
 
+      {/* Price */}
       <div className="flex flex-col justify-center text-center p-2" style={{ flexBasis: '15%' }}>
         {isEditing ? (
           <input
-            type="text"
+            type="number"
             value={updatedPrice}
             onChange={(e) => setUpdatedPrice(e.target.value)}
             className="text-[#666876] break-words w-full border-b-2 border-gray-300 focus:outline-none"
@@ -144,6 +202,7 @@ export const ProductItem: React.FC<ProductItemProps> = ({
         )}
       </div>
 
+      {/* Quantity */}
       <div className="flex flex-col justify-center text-center p-2" style={{ flexBasis: '10%' }}>
         {isEditing ? (
           <input

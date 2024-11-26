@@ -26,8 +26,18 @@ export async function GET(req: Request) {
       orderBy: {
         [field]: order, // Dynamic sorting field and order
       },
+      include: {
+        category: true, // Include related category data
+      },
     });
-    return NextResponse.json(products);
+
+    // Format the response to include category name
+    const productsWithCategoryName = products.map(product => ({
+      ...product,
+      categoryName: product.category.name, // Add category name to product
+    }));
+
+    return NextResponse.json(productsWithCategoryName);
   } catch (error) {
     console.error('Error fetching products:', error);
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });

@@ -66,7 +66,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
         where: {
           id: { in: items.map((item: any) => item.cartItemId) },
         },
-        data: { isCheckout: true },
+        data: { quantity: 0 },
       });
       
 

@@ -8,7 +8,10 @@
 5. Diah Ayu Rahmawati - 22/499722/TK/54760
 
 ## Link Youtube
-
+https://youtu.be/mTHUCpMB1To
 
 ## Link Deployment melalui Vercel
 https://grocery-store-paw-6-rc3g.vercel.app/
+
+## Link PPT
+https://www.canva.com/design/DAGXm9lVL8A/8U8a1OYHZ45exJkKYXELQg/edit?utm_content=DAGXm9lVL8A&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton

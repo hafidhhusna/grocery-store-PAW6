@@ -20,10 +20,37 @@ export default function Login() {
     router.push('/register');
   };
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();  
-    router.push('/dashboard');  
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    const usernameInput = (document.getElementById("username") as HTMLInputElement).value;
+    const passwordInput = (document.getElementById("password") as HTMLInputElement).value;
+
+    if (!usernameInput || !passwordInput) {
+      alert("Please provide both username and password.");
+      return;
+    }
+    
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        username: usernameInput,
+        password: passwordInput,
+      });
+
+      if (result?.error) {
+        alert(result.error || "Login failed. Please check your credentials.");
+        return;
+      }
+      
+      alert("Login successful!");
+      router.push("/category");
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An unexpected error occurred. Please try again.");
+    }
   };
+  
 
   const handleGoogleSignIn = async (props:Props) => {
     const session = await signIn('google', { callbackUrl: '/category' });

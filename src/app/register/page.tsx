@@ -22,11 +22,43 @@ export default function Register() {
     });
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Tambahkan logika register di sini
-    router.push('/dashboard');  
+  
+    // Validate form inputs
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+  
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: form.username,
+          email: form.email,
+          password: form.password,
+        }),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        alert(data.error || "Failed to register");
+        return;
+      }
+  
+      alert("Registration successful! Redirecting to login...");
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred. Please try again later.");
+    }
   };
+  
 
   return (
     <div className="h-screen flex justify-center items-center bg-cover bg-center" style={{ backgroundImage: 'url(/background-green.png)' }}>

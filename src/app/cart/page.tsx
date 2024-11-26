@@ -25,7 +25,7 @@ function App() {
   useEffect(() => {
     const fetchCartItems = async () => {
       if (status === "loading") return; // Wait until session is loaded
-      if (!session?.user?.id) {
+      if (!session?.user?.id) { 
         setError("User is not authenticated.");
         setLoading(false);
         return;
@@ -35,7 +35,6 @@ function App() {
         const res = await fetch(`/api/user/${session.user.id}/cart`);
         if (!res.ok) throw new Error("Failed to fetch cart items");
         const data = await res.json();
-
         // Transform the response data and add a 'selected' property for each item
         const items: CartItemData[] = data.items.map((item: any) => ({
           id: item.id,

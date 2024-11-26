@@ -7,7 +7,7 @@ import SideBar from "@/components/ui/SideBar";
 import ProductBox from "@/components/ui/ProductBox";
 import Link from "next/link";
 import { SessionProvider, useSession } from "next-auth/react";
-import Sort from "@/components/ui/Sort";  // Import komponen Sort
+import Sort from "@/components/ui/Sort";
 
 interface Product {
   id: string;
@@ -27,6 +27,7 @@ interface Category {
 
 const CategoryPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
   const [categoryName, setCategoryName] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +37,6 @@ const CategoryPage: React.FC = () => {
   const searchParams = useSearchParams();
   const categoryId = searchParams.get("category");
 
-  // Fetch category name by ID
   useEffect(() => {
     const fetchCategoryName = async () => {
       try {
@@ -54,7 +54,6 @@ const CategoryPage: React.FC = () => {
     }
   }, [categoryId]);
 
-  // Fetch products by category ID
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -62,6 +61,7 @@ const CategoryPage: React.FC = () => {
         if (!response.ok) throw new Error("Failed to fetch products");
         const data = await response.json();
         setProducts(data);
+        setSortedProducts(data); // Initialize sorted products
       } catch (err) {
         setError(err.message);
       } finally {
@@ -74,42 +74,48 @@ const CategoryPage: React.FC = () => {
     }
   }, [categoryId]);
 
+  // Sorting logic
+  const handleSortChange = (sortField: string, sortOrder: string) => {
+    if (!sortField) {
+      // Reset to default order
+      setSortedProducts([...products]);
+      return;
+    }
+
+    const sorted = [...products].sort((a, b) => {
+      if (sortOrder === "asc") {
+        return a[sortField as keyof Product] > b[sortField as keyof Product] ? 1 : -1;
+      }
+      return a[sortField as keyof Product] < b[sortField as keyof Product] ? 1 : -1;
+    });
+
+    setSortedProducts(sorted);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header */}
       <Header />
-
-      {/* Main Content Section */}
       <div className="flex flex-1 h-screen bg-gray-100">
-        {/* Sidebar */}
         <SideBar />
-
-        {/* Content */}
         <div className="p-8 flex-1">
-          {/* Header for category with Sort on the right */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold text-gray-800">
               <Link href="/category">Categories &gt; {categoryName}</Link>
             </h2>
-            {/* Sort Component on the right */}
-            <Sort />
+            <Sort onSortChange={handleSortChange} />
           </div>
-
-          {/* Loading and Error Handling */}
           {loading && <p>Loading products...</p>}
           {error && <p className="text-red-500">{error}</p>}
-
-          {/* Display Products */}
           {!loading && !error && (
             <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-6">
-              {products.map((product) => (
+              {sortedProducts.map((product) => (
                 <ProductBox
                   key={product.id}
                   name={product.name}
                   price={product.price}
                   imageSrc={product.images}
                   productId={product.id}
-                  userId={session?.user?.id} // Pass userId from session
+                  userId={session?.user?.id}
                 />
               ))}
             </div>

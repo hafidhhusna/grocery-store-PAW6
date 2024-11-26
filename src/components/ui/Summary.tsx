@@ -1,5 +1,5 @@
-import React from 'react';
-import './Summary.css';
+import React from "react";
+import "./Summary.css";
 
 interface Product {
   id: string;
@@ -27,12 +27,12 @@ function Summary({ cartItems, onConfirm }: SummaryProps) {
       {cartItems.map((product) => (
         <div className="checkout-item" key={product.id}>
           <p>{product.name}</p>
-          <p>Rp {((product.price * product.quantity).toFixed(2).replace('.', ','))}</p>
+          <p>Rp {(product.price * product.quantity).toFixed(2).replace(".", ",")}</p>
         </div>
       ))}
       <div className="checkout-total">
         <p>TOTAL</p>
-        <p>Rp {total.toFixed(2).replace('.', ',')}</p>
+        <p>Rp {total.toFixed(2).replace(".", ",")}</p>
       </div>
       <button className="checkout-button" onClick={onConfirm}>Checkout</button>
     </div>

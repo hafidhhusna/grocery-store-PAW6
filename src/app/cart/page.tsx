@@ -201,7 +201,7 @@ function App() {
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       <Header />
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         <SideBar />
         <main className="main-content p-8 flex-1">
           <div className="cart-list-container">

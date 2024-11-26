@@ -5,7 +5,7 @@ import { FaRegCheckCircle, FaRegClock } from "react-icons/fa";
 import { VscError } from "react-icons/vsc";
 
 interface PaymentStatusProps {
-  status: "success" | "failed" | "pending";
+  status: string;
 }
 
 const PaymentStatus: React.FC<PaymentStatusProps> = ({ status }) => {

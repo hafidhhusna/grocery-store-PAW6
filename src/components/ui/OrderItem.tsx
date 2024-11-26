@@ -1,4 +1,3 @@
-// src/components/OrderItem.tsx
 import React from 'react';
 
 interface OrderItemProps {
@@ -6,19 +5,17 @@ interface OrderItemProps {
   date: string;
   totalOrder: string;
   status: string;
-  viewDetailsLink: string;
 }
 
-const OrderItem: React.FC<OrderItemProps> = ({ orderNo, date, totalOrder, status, viewDetailsLink }) => {
+const OrderItem: React.FC<OrderItemProps> = ({ orderNo, date, totalOrder, status }) => {
   return (
     <div className="order-item">
-      <span>{orderNo}</span>
-      <span>{date}</span>
-      <span>{totalOrder}</span>
-      <span className={status === 'On Progress' ? 'status-progress' : 'status-done'}>
+      <span className="order-no">{orderNo}</span>
+      <span className="date">{date}</span>
+      <span className="total-order">{totalOrder}</span>
+      <span className={`status ${status === 'On Progress' ? 'status-progress' : 'status-done'}`}>
         {status}
       </span>
-      <a href={viewDetailsLink} className="view-details">View Details</a>
     </div>
   );
 };

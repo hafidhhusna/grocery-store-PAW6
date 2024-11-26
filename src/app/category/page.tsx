@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/components/ui/Header';
 import SideBar from '@/components/ui/SideBar';
 import CategoryBox from '@/components/ui/CategoryBox';
+import Sort from '@/components/ui/Sort'; // Import komponen Sort
 
 interface Category {
   id: string;
@@ -49,7 +50,12 @@ const HomePage: React.FC = () => {
 
         {/* Content */}
         <div className="p-8 flex-1">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Categories</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-semibold text-gray-800">Categories</h2>
+
+            {/* Sort Component */}
+            <Sort />
+          </div>
 
           {/* Loading and Error States */}
           {loading && <p>Loading categories...</p>}
@@ -60,10 +66,10 @@ const HomePage: React.FC = () => {
             <div className="grid grid-cols-[repeat(auto-fit,_minmax(200px,_1fr))] gap-6">
               {categories.map((category) => (
                 <CategoryBox
-                key={category.id}
-                id={category.id}
-                title={category.name}
-                imageSrc={category.image}
+                  key={category.id}
+                  id={category.id}
+                  title={category.name}
+                  imageSrc={category.image}
                 />
               ))}
             </div>

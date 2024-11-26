@@ -50,11 +50,14 @@
   flex: 0 0 15%; /* 20% */
   display: flex;
   align-items: center;
+  color: #666876;
+
 }
 
 .cart-total {
   flex: 0 0 20%; /* 20% */
   text-align: center;
+  color: #666876;
 }
 
 .cart-delete {

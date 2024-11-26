@@ -14,16 +14,13 @@ interface SummaryProps {
 }
 
 function Summary({ cartItems, onConfirm }: SummaryProps) {
-  const shippingCost = 10000;
-  const taxRate = 0.1;
 
   const subtotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
 
-  const tax = subtotal * taxRate;
-  const total = subtotal + shippingCost + tax;
+  const total = subtotal;
 
   return (
     <div className="checkout-summary">
@@ -33,18 +30,6 @@ function Summary({ cartItems, onConfirm }: SummaryProps) {
           <p>Rp {((product.price * product.quantity).toFixed(2).replace('.', ','))}</p>
         </div>
       ))}
-      <div className="checkout-item subtotal">
-        <p>SUBTOTAL</p>
-        <p>Rp {subtotal.toFixed(2).replace('.', ',')}</p>
-      </div>
-      <div className="checkout-item">
-        <p>Shipping Cost</p>
-        <p>Rp {shippingCost.toFixed(2).replace('.', ',')}</p>
-      </div>
-      <div className="checkout-item">
-        <p>Tax</p>
-        <p>Rp {tax.toFixed(2).replace('.', ',')}</p>
-      </div>
       <div className="checkout-total">
         <p>TOTAL</p>
         <p>Rp {total.toFixed(2).replace('.', ',')}</p>

@@ -100,5 +100,11 @@ model Order {
   items      CartItem[] @relation("OrderItems") // Relation to CartItem
   totalPrice Float // Total price of the order
   orderNo    String     @unique // Unique order number
+  status     OrderStatus @default(processing) // Status of the order
   createdAt  DateTime   @default(now()) // Date the order was created
+}
+
+enum OrderStatus {
+  processing
+  confirmed
 }

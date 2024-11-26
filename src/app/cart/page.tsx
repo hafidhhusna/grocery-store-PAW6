@@ -25,6 +25,7 @@ function App() {
   // Fetch cart items from API only if the user is authenticated
   useEffect(() => {
     const fetchCartItems = async () => {
+      console.log(session?.user);
       if (status === "loading") return; // Wait until session is loaded
       if (!session?.user?.id) {
         setError("User is not authenticated.");

@@ -54,6 +54,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
           },
           totalPrice,
           orderNo,
+          status: "processing", // Set the status to 'processing'
         },
         include: {
           items: true, // Include the associated items in the response
@@ -81,3 +82,29 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     );
   }
 }
+
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+    const userId = params.id; // Extract `userId` from the route parameter
+  
+    try {
+      // Fetch orders for the user
+      const orders = await prisma.order.findMany({
+        where: { userId },
+        include: {
+          items: true, // Include the associated items in the response if needed
+        },
+      });
+  
+      if (orders.length === 0) {
+        return NextResponse.json({ error: "No orders found" }, { status: 404 });
+      }
+  
+      return NextResponse.json(orders);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      return NextResponse.json(
+        { error: "Failed to fetch orders" },
+        { status: 500 }
+      );
+    }
+  }

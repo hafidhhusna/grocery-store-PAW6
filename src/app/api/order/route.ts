@@ -15,7 +15,7 @@ export async function GET() {
     }
 
     return NextResponse.json(orders);
-  } catch (error) {
+  } catch (error:any) {
     console.error("Error fetching orders:", error);
     return NextResponse.json(
       { error: "Failed to fetch orders" },

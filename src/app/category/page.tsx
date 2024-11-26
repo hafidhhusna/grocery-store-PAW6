@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
         }
         const data = await res.json();
         setCategories(data);
-      } catch (err) {
+      } catch (err:any) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -52,9 +52,6 @@ const HomePage: React.FC = () => {
         <div className="p-8 flex-1">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-semibold text-gray-800">Categories</h2>
-
-            {/* Sort Component */}
-            <Sort />
           </div>
 
           {/* Loading and Error States */}

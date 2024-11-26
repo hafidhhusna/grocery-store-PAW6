@@ -64,7 +64,7 @@ const CategoryPage: React.FC = () => {
         console.log(data);
         setProducts(data);
         setSortedProducts(data); // Initialize sorted products
-      } catch (err) {
+      } catch (err:any) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -93,7 +93,7 @@ const CategoryPage: React.FC = () => {
   
       const sortedData = await response.json();
       setSortedProducts(sortedData); // Update state with sorted products
-    } catch (err) {
+    } catch (err:any) {
       setError(err.message);
     } finally {
       setLoading(false);

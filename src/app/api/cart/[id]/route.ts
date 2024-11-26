@@ -41,7 +41,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       });
   
       return NextResponse.json({ message: 'Cart item deleted successfully.' }, { status: 200 });
-    } catch (error) {
+    } catch (error:any) {
       console.error(error);
       return NextResponse.json({ error: 'An error occurred while deleting the cart item.' }, { status: 500 });
     }
@@ -90,7 +90,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       });
   
       return NextResponse.json(updatedCartItem, { status: 200 });
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error updating cart item quantity:", error);
       return NextResponse.json(
         { error: "An error occurred while updating the cart item quantity." },

@@ -18,7 +18,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     });
 
     return NextResponse.json(updatedOrder);
-  } catch (error) {
+  } catch (error:any) {
     console.error("Error updating order status:", error);
     return NextResponse.json(
       { error: "Failed to update order status" },

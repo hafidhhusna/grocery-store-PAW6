@@ -17,7 +17,8 @@ interface Product {
   category: {
     name: string;
   };
-}
+  quantity:number;
+};
 
 const SearchPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -36,7 +37,7 @@ const SearchPage: React.FC = () => {
         if (!response.ok) throw new Error('Failed to fetch products');
         const data = await response.json();
         setProducts(data);
-      } catch (err) {
+      } catch (err:any) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -79,6 +80,7 @@ const SearchPage: React.FC = () => {
                   imageSrc={product.images}
                   productId={product.id}
                   userId={session?.user.id}
+                  stock={product.quantity}
                 />
               ))}
             </div>
